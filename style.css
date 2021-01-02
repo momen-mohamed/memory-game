@@ -1,19 +1,18 @@
 body {
-  font-family: "Coda", cursive;
+  text-align: center;
+  font-family: sans-serif;
   background: #ffffff
     url("https://res.cloudinary.com/rdelk/image/upload/v1528058711/FEND%20-%20Project%202/geometry2.png");
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 header {
   text-align: center;
 }
 .wrapper {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  margin: auto;
+  margin: 0 auto;
   width: 90%;
   display: flex;
   flex-direction: column;
@@ -32,51 +31,50 @@ header {
   color: black;
 }
 
-/* main grid which contains all the cards */
+.game-container {
+  width: 50%;
+  /* border: 1px solid red; */
+  backdrop-filter: blur(0.5px);
+  background-color: rgba(228, 155, 96, 0.2);
 
-/* @media only screen and (min-width: 10px) and (max-width: 610px) {
-  .main {
-    width: 80%;
-    grid-auto-rows: 90px;
-  }
+  position: relative;
+  border-radius: 10px;
 }
 
-@media only screen and (min-width: 620px) {
-  .main {
-    width: 50%;
-    grid-auto-rows: 150px;
-  }
-} */
+.background {
+  position: absolute;
+  /* background-color: red; */
+  height: 100%;
+  width: 100%;
+}
+
 .main {
-  width: 50%;
-  grid-auto-rows: 90px;
+  grid-auto-rows: 16vh;
   padding: 10px;
   margin: 0 auto;
-  background-color: darkblue;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 130px));
+  grid-template-columns: repeat(3, 0.3fr);
   grid-gap: 20px;
   justify-content: center;
-
-  /* background: linear-gradient(160deg, #b06ab3 0%, #4568dc 100%); */
-  background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+  /* background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%); */
   border-radius: 10px;
-  box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
+  /* box-shadow: 0px 0px 30px 0 rgba(61, 60, 60, 0.5); */
 }
 
 /* flipping card part */
+
 .flip-container {
-  /* background-color: tomato; */
   -ms-perspective: 1000px;
   -webkit-perspective: 1000px;
   perspective: 1000px;
 }
 
 .flipper {
+  cursor: pointer;
   transform-style: preserve-3d;
   width: 100%;
   height: 100%;
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.05s ease-in-out;
 }
 
 .front,
@@ -102,9 +100,13 @@ header {
   transform: rotateY(180deg);
   background-color: green;
 }
-.flipper:hover {
+
+.is-flipped {
   transform: rotateY(180deg);
-  /* transform: scale(1.05); */
+}
+
+.is-hovered {
+  transform: translateZ(50px);
 }
 
 /* flipping card end */
