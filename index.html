@@ -6,16 +6,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" type="text/css"
+    href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
-  <header><h1>Memory Game</h1></header>
+  <header>
+    <h1>Memory Game</h1>
+  </header>
   <div class="wrapper">
     <div class="information-bar">
-      <div>*Rating*</div>
-      <div class='middle'>Moves:</div>
-      <div class= 'middle'>Time:</div>
-      <div>Reset</div>
+      <ul class="stars" title="Rating">
+        <li><i class="fa fa-star"></i></li>
+        <li><i class="fa fa-star"></i></li>
+        <li><i class="fa fa-star"></i></li>
+      </ul>
+      <div class='moves' title="Attempted matches"> <span id="moves-made"> 0 Moves</span></div>
+      <div class='timer' title="Time elapsed"><span id='timer'>0:00 </span></div>
+      <div class='restart' title="Restart"><i class="fa fa-repeat"></i></div>
     </div>
     <div class="main">
       <div class="flip-container">
