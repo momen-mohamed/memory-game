@@ -1,3 +1,12 @@
+body {
+  font-family: 'Coda', cursive;
+  background: #ffffff
+    url("https://res.cloudinary.com/rdelk/image/upload/v1528058711/FEND%20-%20Project%202/geometry2.png");
+}
+
+header{
+  text-align: center;
+}
 .wrapper {
   position: absolute;
   left: 0;
@@ -6,7 +15,6 @@
   top: 0;
   margin: auto;
   width: 90%;
-  background-color: grey;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -19,11 +27,11 @@
   width: 80%;
   padding: 10px;
   margin: 20px auto;
-  background-color: darkblue;
   display: flex;
   justify-content: space-between;
-  color: white;
+  color: black;
 }
+
 
 /* main grid which contains all the cards */
 
@@ -49,7 +57,14 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 130px));
   grid-gap: 20px;
+<<<<<<< HEAD
   justify-content: center;
+=======
+  /* background: linear-gradient(160deg, #b06ab3 0%, #4568dc 100%); */
+  background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+  border-radius: 10px;
+  box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
+>>>>>>> 4b9fa0e428e9b3535c36b3ada5fcd168c10749cd
 }
 
 /* flipping card part */
@@ -75,13 +90,15 @@
   height: 100%;
   width: 100%;
   backface-visibility: hidden;
-  background-color: darkblue;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 8px;
+  box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+  color: #ffffff;
 }
 .front {
-  background-color: orange;
+  background: #2e3d49;
 }
 
 .back {
