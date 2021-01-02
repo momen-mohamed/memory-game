@@ -1,0 +1,81 @@
+.wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  margin: auto;
+  width: 90%;
+  background-color: grey;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* bar that appear above the main grid */
+.information-bar {
+  height: 20px;
+  width: 40%;
+  padding: 10px;
+  margin: 20px auto;
+  background-color: darkblue;
+  display: flex;
+  justify-content: space-between;
+  color: white;
+}
+
+/* main grid which contains all the cards */
+.main {
+  padding: 10px;
+  margin: 0 auto;
+  width: 40%;
+  background-color: darkblue;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(40px, 1fr));
+  grid-auto-rows: 120px;
+  grid-gap: 20px;
+}
+
+/* flipping card part */
+.flip-container {
+  /* background-color: tomato; */
+  -ms-perspective: 1000px;
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
+}
+
+.flipper {
+  transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s ease-in-out;
+}
+
+.front,
+.back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  backface-visibility: hidden;
+  background-color: darkblue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.front {
+  background-color: orange;
+}
+
+.back {
+  transform: rotateY(180deg);
+  background-color: green;
+}
+.flipper:hover {
+  transform: rotateY(180deg);
+  /* transform: scale(1.05); */
+}
+
+/* flipping card end */
