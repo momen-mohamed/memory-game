@@ -16,7 +16,7 @@
 /* bar that appear above the main grid */
 .information-bar {
   height: 20px;
-  width: 40%;
+  width: 80%;
   padding: 10px;
   margin: 20px auto;
   background-color: darkblue;
@@ -26,15 +26,30 @@
 }
 
 /* main grid which contains all the cards */
+
+/* @media only screen and (min-width: 10px) and (max-width: 610px) {
+  .main {
+    width: 80%;
+    grid-auto-rows: 90px;
+  }
+}
+
+@media only screen and (min-width: 620px) {
+  .main {
+    width: 50%;
+    grid-auto-rows: 150px;
+  }
+} */
 .main {
+  width: 50%;
+  grid-auto-rows: 90px;
   padding: 10px;
   margin: 0 auto;
-  width: 40%;
   background-color: darkblue;
   display: grid;
-  grid-template-columns: repeat(3, minmax(40px, 1fr));
-  grid-auto-rows: 120px;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 130px));
   grid-gap: 20px;
+  justify-content: center;
 }
 
 /* flipping card part */
