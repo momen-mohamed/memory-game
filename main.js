@@ -1,7 +1,7 @@
-"use strict";
+let gameContainer = document.querySelector(".main-game-container");
 
-
-//model 
+let setTimeOutDuration = 600;
+//model
 class Card {
   constructor(id, title) {
     this.id = id;
@@ -9,7 +9,7 @@ class Card {
   }
 }
 
-let ourCards = [
+const ourCards = [
   new Card(1, "ninja"),
   new Card(1, "ninja"),
   new Card(2, "elephant"),
@@ -18,84 +18,105 @@ let ourCards = [
   new Card(3, "tiger"),
   new Card(4, "lion"),
   new Card(4, "lion"),
+  new Card(5, "tom"),
+  new Card(5, "tom"),
+  new Card(6, "jerry"),
+  new Card(6, "jerry"),
 ];
 
-let gameContainer = document.querySelector(".main");
-
-function initializeGame() {
+function initgame() {
   for (let index = 0; index < ourCards.length; index++) {
-    let mainCardContainer = document.createElement("div");
+    let cardContainer = document.createElement("div");
     let card = document.createElement("div");
     let frontFace = document.createElement("div");
     let backFace = document.createElement("div");
-    mainCardContainer.classList.add("flip-container");
-    card.className = "flipper";
+    ////////////////////////////////////////////////
+    cardContainer.classList.add("card-container");
+    card.classList.add("card");
     frontFace.className = "front";
     backFace.className = "back";
+    backFace.textContent = ourCards[index].title;
     card.id = ourCards[index].id;
+    //////////////////////////////////////////////////
     card.appendChild(frontFace);
     card.appendChild(backFace);
-    mainCardContainer.appendChild(card);
-    gameContainer.appendChild(mainCardContainer);
+    cardContainer.appendChild(card);
+    gameContainer.appendChild(cardContainer);
+    gameContainer.classList.add("flip-all-cards", "no-clicking");
+    setTimeout(() => {
+      gameContainer.classList.remove("flip-all-cards", "no-clicking");
+    }, 2000);
   }
 }
 
-initializeGame();
-console.log(gameContainer);
+initgame();
 
-let cards = Array.from(document.querySelector(".main").children);
-console.log(cards);
+let allCardContainers = Array.from(gameContainer.children);
+console.log(allCardContainers);
 
-cards.forEach(function (card) {
-    card.addEventListener("mouseover", function () {
-      cardMouseOver(card);
-    });
+allCardContainers.forEach(function (cardContainer) {
+  cardContainer.addEventListener("mouseover", function () {
+    // mouseEvent(cardContainer, "mouseover", "mouseout");
+    cardContainer.style.animation = "mouseover 0.1s 1 forwards";
+  });
 
-    card.addEventListener("mouseleave", function () {
-      cardMouseLeave(card);
-    });
-  card.addEventListener("click", function () {
-    flipCard(card);
+  cardContainer.addEventListener("mouseout", function () {
+    cardContainer.style.animation = "mouseout 0.1s 1 forwards";
+  });
+  cardContainer.addEventListener("click", function () {
+    flipCard(cardContainer);
   });
 });
 
 function flipCard(selectedCard) {
-  // add is flipped class
-  selectedCard.querySelector(".flipper").classList.toggle("is-flipped");
-
-  // filter flipped card
+  selectedCard.querySelector(".card").classList.add("is-flipped");
 
   let flippedCards = Array.from(
-    document.querySelectorAll(".flipper")
+    document.querySelectorAll(".card")
   ).filter((card) => card.classList.contains("is-flipped"));
 
   if (flippedCards.length == 2) {
     console.log("two card are flipped");
+
+    stopClicking();
+
     checkmatch(flippedCards[0], flippedCards[1]);
   }
+}
 
-  // now we have to stop card from being clicked again
+function stopClicking() {
+  //   print(mainCardContainer);
+  gameContainer.classList.add("no-clicking");
+
+  setTimeout(() => {
+    gameContainer.classList.remove("no-clicking");
+  }, setTimeOutDuration);
 }
 
 function checkmatch(card1, card2) {
   if (card1.id === card2.id) {
-    console.log("matched");
+    setTimeout(() => {
+      card1.classList.add("matched");
+      card2.classList.add("matched");
+      card1.parentElement.style.animation = "pulse 0.5s 1 forwards";
+      card2.parentElement.style.animation = "pulse 0.5s 1 forwards";
+      card1.classList.remove("is-flipped");
+      card2.classList.remove("is-flipped");
+    }, setTimeOutDuration);
   } else {
     console.log("not matched");
-  }
-}
-function cardMouseOver(selectedCard) {
-  if (
-    !selectedCard.querySelector(".flipper").classList.contains("is-flipped")
-  ) {
-    selectedCard.querySelector(".flipper").classList.add("is-hovered");
+
+    setTimeout(() => {
+      gameContainer.classList.remove("no-clicking");
+      card1.parentElement.style.animation = "rubberBand 1s 1 forwards";
+      card2.parentElement.style.animation = "rubberBand 1s 1 forwards";
+      card1.classList.remove("is-flipped");
+      card2.classList.remove("is-flipped");
+    }, setTimeOutDuration);
   }
 }
 
-function cardMouseLeave(selectedCard) {
-  if (
-    !selectedCard.querySelector(".flipper").classList.contains("is-flipped")
-  ) {
-    selectedCard.querySelector(".flipper").classList.remove("is-hovered");
-  }
+function mouseEvent(cardContainer, class1, class2) {
+  cardContainer.classList.add(class1);
+  cardContainer.classList.remove(class2);
 }
