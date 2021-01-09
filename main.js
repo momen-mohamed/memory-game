@@ -1,5 +1,10 @@
 let gameContainer = document.querySelector(".main-game-container");
-
+let movesSpan = document.getElementById("moves-made");
+const stars = document.querySelectorAll("li i");
+let started = false;
+let seconds = 0;
+let timeCount;
+let movesCount = 0; // Number of moves made(clicks on card)
 let setTimeOutDuration = 600;
 //model
 class Card {
@@ -69,17 +74,17 @@ allCardContainers.forEach(function (cardContainer) {
 });
 
 function flipCard(selectedCard) {
+  if (started === false) {
+    startTimer();
+  }
   selectedCard.querySelector(".card").classList.add("is-flipped");
-
   let flippedCards = Array.from(
     document.querySelectorAll(".card")
   ).filter((card) => card.classList.contains("is-flipped"));
 
   if (flippedCards.length == 2) {
     console.log("two card are flipped");
-
     stopClicking();
-
     checkmatch(flippedCards[0], flippedCards[1]);
   }
 }
@@ -114,9 +119,72 @@ function checkmatch(card1, card2) {
       card2.classList.remove("is-flipped");
     }, setTimeOutDuration);
   }
+
+  movesCount++;
+  updatMoves();
 }
 
-function mouseEvent(cardContainer, class1, class2) {
-  cardContainer.classList.add(class1);
-  cardContainer.classList.remove(class2);
+// function mouseEvent(cardContainer, class1, class2) {
+//   cardContainer.classList.add(class1);
+//   cardContainer.classList.remove(class2);
+// }
+
+document.getElementById("restart").addEventListener("click", restartGame);
+function restartGame() {
+  movesCount = 0;
+  seconds = 0;
+  started = true;
+  let matchedCards = Array.from(
+    document.querySelectorAll(".card")
+  ).filter((card) => card.classList.contains("matched"));
+
+  let flippedCards = Array.from(
+    document.querySelectorAll(".card")
+  ).filter((card) => card.classList.contains("is-flipped"));
+
+  matchedCards.forEach((card) => {
+    card.classList.remove("matched");
+  });
+
+  flippedCards.forEach((card) => {
+    card.classList.remove("is-flipped");
+  });
+
+  Array.from(stars).forEach((star) => {
+    star.className = "fa fa-star";
+    console.log(star.className);
+  });
+  resetTimer();
+  updatMoves();
+}
+
+function updatMoves() {
+  movesSpan.textContent =
+    movesCount == 1 ? `${movesCount} Move` : `${movesCount} Moves`;
+  switch (movesCount) {
+    case 2:
+      stars[2].className += "-o";
+      break;
+    case 10:
+      stars[1].className += "-o";
+      break;
+    default:
+      break;
+  }
+}
+
+function startTimer() {
+  timeCount = setInterval(() => {
+    seconds += 1;
+    document.getElementById("timer").textContent =
+      seconds === 1 ? `${seconds} Second` : `${seconds} Seconds`;
+  }, 1000);
+  started = true;
+}
+
+function resetTimer() {
+  seconds = 0;
+  started = false;
+  document.getElementById("timer").textContent = `${seconds} Seconds`;
+  clearInterval(timeCount);
 }
