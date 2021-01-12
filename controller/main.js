@@ -7,10 +7,12 @@ const infobar = document.querySelector(".information-bar");
 const stars = document.querySelectorAll("li i");
 const setTimeOutDuration = 600;
 const restartButton = document.getElementById("restart");
+const homeButton = document.getElementById("home");
 let difficulty = "Easy";
 let numberOfCard = "8";
 
 let gameBrain = new GameBrain();
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 window.onload = function () {
   let overlay = createStartModal();
@@ -18,10 +20,9 @@ window.onload = function () {
   document.querySelector(".overlay").classList.add("one");
   document.body.classList.add("modal-active");
 };
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 function init() {
-  gameBrain = new GameBrain(numberOfCard, difficulty);
+  gameBrain = new GameBrain(Number(numberOfCard), difficulty);
   console.log(difficulty, numberOfCard);
   gameBrain.initGame();
   document.getElementById("timer").textContent = `${gameBrain.seconds} Seconds`;
@@ -46,6 +47,9 @@ function init() {
   gameContainer.style.animation = "fly 0.9s ease-in-out forwards";
   infobar.style.animation = "land 0.9s ease-in-out forwards";
   restartButton.addEventListener("click", restartButtonPressed);
+  homeButton.addEventListener('click',function(){
+    location.reload();
+  })
   gameContainer.classList.add("flip-all-cards", "no-clicking");
   setTimeout(() => {
     gameContainer.classList.remove("flip-all-cards", "no-clicking");
@@ -96,7 +100,7 @@ function stopClicking() {
     gameContainer.classList.remove("no-clicking");
   }, setTimeOutDuration);
 }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////
 function winnerCallBack() {
   let overlay = createScoreModal(true);
   document.body.appendChild(overlay);
@@ -104,7 +108,7 @@ function winnerCallBack() {
   document.body.classList.add("modal-active");
   document.getElementById("winner").play();
 }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function failCallback() {
   let overlay = createScoreModal(false);
   document.body.appendChild(overlay);
@@ -112,7 +116,7 @@ function failCallback() {
   document.body.classList.add("modal-active");
   document.getElementById("gameover").play();
 }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 async function updateCardsUI(card1, card2, matched) {
   let card1UI = document.getElementById(card1.id);
   let card2UI = document.getElementById(card2.id);
@@ -169,12 +173,15 @@ function restartButtonPressed() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 function updateMoves() {
   let moves = gameBrain.moves;
+  let numberOfCards = gameBrain.numberofcards;
+  console.log(numberOfCards);
+  console.log(moves);
   movesSpan.textContent = moves == 1 ? `${moves} Move` : `${moves} Moves`;
   switch (moves) {
-    case 2:
+    case numberOfCards / 2 + 1:
       stars[2].className += "-o";
       break;
-    case 10:
+    case numberOfCards:
       stars[1].className += "-o";
       break;
     default:
@@ -187,7 +194,7 @@ function removeAllChildNodes(parent) {
     parent.removeChild(parent.firstChild);
   }
 }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////
 function createStartModal() {
   let overlay = document.createElement("div");
   let overlayBackground = document.createElement("div");
@@ -277,9 +284,13 @@ function createScoreModal(winner) {
   let overlay = document.createElement("div");
   let overlayBackground = document.createElement("div");
   let modal = document.createElement("div");
+  let ratingTitle = document.createElement("p");
   let button = document.createElement("button");
   let title = document.createElement("h2");
+  let starClone = document.getElementById("star-list").cloneNode(true);
 
+
+  ratingTitle.textContent = "Rating";
   if (winner) {
     title.innerHTML = "Well Done!";
     button.innerHTML = "Restart";
@@ -302,7 +313,7 @@ function createScoreModal(winner) {
   overlay.className = "overlay";
   modal.className = "modal";
 
-  modal.append(title, button);
+  modal.append(title,ratingTitle,starClone, button);
   overlayBackground.appendChild(modal);
   overlay.appendChild(overlayBackground);
 

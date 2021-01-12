@@ -45,9 +45,9 @@ export default class GameBrain {
   initGame() {
     let availabeCards = [];
 
-    console.log(Number(this.numberofcards));
+    console.log(this.numberofcards);
     let counter = 0;
-    for (let index = 0; index < Number(this.numberofcards); index++) {
+    for (let index = 0; index < this.numberofcards; index++) {
       let card = new Card(index, counter, this.availableOptions[counter]);
       console.log(card);
       if (index % 2 != 0) {
