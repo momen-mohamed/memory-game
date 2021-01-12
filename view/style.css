@@ -150,6 +150,8 @@ body {
   transform: rotateY(180deg);
   -webkit-transform: RotateY(180deg);
   background-color: #cbc4db;
+  font-size: 50px;
+
 }
 
 /* js manipulated classes*/
@@ -366,7 +368,8 @@ button:focus {
   background-color: #4e54e8;
 }
 
-.difficulties-wrapper,.numbers-wrapper {
+.difficulties-wrapper,
+.numbers-wrapper {
   display: flex;
   width: 100%;
   align-items: center;
@@ -374,12 +377,14 @@ button:focus {
   margin-bottom: 10px;
 }
 
-.difficulties-wrapper div.active,.numbers-wrapper div.active2{
-  background-color:#4e54c8 ;
+.difficulties-wrapper div.active,
+.numbers-wrapper div.active2 {
+  background-color: #4e54c8;
   transform: scale(1.05);
 }
 
-.difficulties-wrapper div,.numbers-wrapper div {
+.difficulties-wrapper div,
+.numbers-wrapper div {
   cursor: pointer;
   flex: 1;
   border-radius: 5px;
@@ -391,11 +396,13 @@ button:focus {
   transition: all 0.2s;
 }
 
-.difficulties-wrapper div:hover,.numbers-wrapper div:hover {
-  background-color:#4e54c8 ;
+.difficulties-wrapper div:hover,
+.numbers-wrapper div:hover {
+  background-color: #4e54c8;
 }
 
 .overlay .modal h2 {
+  text-align: center;
   font-size: 25px;
   line-height: 25px;
   margin-bottom: 15px;

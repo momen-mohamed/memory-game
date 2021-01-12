@@ -8,7 +8,7 @@ const stars = document.querySelectorAll("li i");
 const setTimeOutDuration = 600;
 const restartButton = document.getElementById("restart");
 let difficulty = "Easy";
-let numberOfCard = "9";
+let numberOfCard = "8";
 
 let gameBrain = new GameBrain();
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,6 +21,7 @@ window.onload = function () {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 function init() {
+  gameBrain = new GameBrain(numberOfCard, difficulty);
   console.log(difficulty, numberOfCard);
   gameBrain.initGame();
   document.getElementById("timer").textContent = `${gameBrain.seconds} Seconds`;
@@ -101,6 +102,7 @@ function winnerCallBack() {
   document.body.appendChild(overlay);
   document.querySelector(".overlay").classList.add("one");
   document.body.classList.add("modal-active");
+  document.getElementById("winner").play();
 }
 
 function failCallback() {
@@ -108,6 +110,7 @@ function failCallback() {
   document.body.appendChild(overlay);
   document.querySelector(".overlay").classList.add("one");
   document.body.classList.add("modal-active");
+  document.getElementById("gameover").play();
 }
 
 async function updateCardsUI(card1, card2, matched) {
@@ -116,7 +119,10 @@ async function updateCardsUI(card1, card2, matched) {
   if (matched) {
     setTimeout(() => {
       addClassToCards(card1UI, card2UI, "matched");
-      document.getElementById("sucess").play();
+      console.log(gameBrain.isWinner);
+      if (!gameBrain.isWinner) {
+        document.getElementById("sucess").play();
+      }
       addClassToCards(card1UI.parentElement, card2UI.parentNode, "no-clicking");
       addAnimationToCard(card1UI, card2UI, "pulse 0.5s 1 forwards");
       removeClassFromCards(card1UI, card2UI, "is-flipped");
@@ -131,8 +137,6 @@ async function updateCardsUI(card1, card2, matched) {
   }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
-// movesCount++;
-// updateMoves();
 function addClassToCards(card1, card2, added_class) {
   card1.classList.add(added_class);
   card2.classList.add(added_class);
@@ -199,7 +203,7 @@ function createStartModal() {
   numbersSelection.className = "numbers-wrapper";
 
   let difficulties = ["Easy", "Medium", "Hard"];
-  let cardsNumbers = ["9", "12", "16"];
+  let cardsNumbers = ["8", "12", "16"];
   p1.textContent = "Select Difficulty";
   p2.textContent = "Select no.of cards";
   // creating difficulties selection part
@@ -221,7 +225,7 @@ function createStartModal() {
     difficultySelection.appendChild(item);
   }
 
-    // creating number of cards selection part
+  // creating number of cards selection part
   for (let index = 0; index < cardsNumbers.length; index++) {
     let item = document.createElement("div");
     if (index == 0) {
@@ -276,7 +280,6 @@ function createScoreModal(winner) {
   let button = document.createElement("button");
   let title = document.createElement("h2");
 
-
   if (winner) {
     title.innerHTML = "Well Done!";
     button.innerHTML = "Restart";
@@ -292,6 +295,7 @@ function createScoreModal(winner) {
     setTimeout(() => {
       document.body.classList.remove("modal-active");
       document.querySelector(".overlay").parentNode.removeChild(overlay);
+      restartButtonPressed();
     }, 1200);
   });
 

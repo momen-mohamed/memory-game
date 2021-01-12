@@ -2,22 +2,21 @@
 import Card from "./card_model.js";
 
 export default class GameBrain {
-  constructor() {
-    this.ourCards = [
-      new Card(1, 1, "ninja"),
-      new Card(2, 1, "ninja"),
-      new Card(3, 2, "elephant"),
-      new Card(4, 2, "elephant"),
-      new Card(5, 3, "tiger"),
-      new Card(6, 3, "tiger"),
-      new Card(7, 4, "lion"),
-      new Card(8, 4, "lion"),
-      new Card(9, 5, "tom"),
-      new Card(10, 5, "tom"),
-      new Card(11, 6, "jerry"),
-      new Card(12, 6, "jerry"),
+  constructor(numberofcards, difficulty) {
+    this.availableOptions = [
+      "🐸",
+      "🐼",
+      "🐵",
+      "🐷",
+      "🐌",
+      "🐙",
+      "🐠",
+      "🐲",
+      "🦜",
     ];
-    this.choosenTimer = 90;
+    this.numberofcards = numberofcards;
+    this.choosenTimer =
+      difficulty == "Easy" ? 100 : difficulty == "Medium" ? 60 : 30;
     this.shuffledArray = [];
     this.started = false;
     this.seconds = this.choosenTimer;
@@ -25,6 +24,10 @@ export default class GameBrain {
     this.openedCardsList = [];
     this.matchedCardNumbers = 0;
     this.movesCount = 0; // Number of moves made(clicks on card)
+  }
+
+  get isWinner() {
+    return this.matchedCardNumbers == this.shuffledArray.length;
   }
 
   get moves() {
@@ -40,7 +43,20 @@ export default class GameBrain {
   }
 
   initGame() {
-    this.shuffledArray = this.ourCards.slice(0);
+    let availabeCards = [];
+
+    console.log(Number(this.numberofcards));
+    let counter = 0;
+    for (let index = 0; index < Number(this.numberofcards); index++) {
+      let card = new Card(index, counter, this.availableOptions[counter]);
+      console.log(card);
+      if (index % 2 != 0) {
+        counter++;
+      }
+      availabeCards.push(card);
+    }
+    console.log(availabeCards);
+    this.shuffledArray = this.shuffle(availabeCards.slice(0));
   }
 
   flipCard(cardId) {
