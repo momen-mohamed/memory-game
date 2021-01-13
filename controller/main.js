@@ -27,7 +27,7 @@ function init() {
   document.getElementById("timer").textContent = `${gameBrain.seconds} Seconds`;
   let shuffledArray = gameBrain.cards;
   for (let index = 0; index < shuffledArray.length; index++) {
-    let card = createCard(shuffledArray[index].title,shuffledArray[index].id);
+    let card = createCard(shuffledArray[index].title, shuffledArray[index].id);
     gameContainer.appendChild(card);
     card.addEventListener("mouseover", function () {
       card.style.animation = "mouseover 0.1s 1 forwards";
@@ -52,7 +52,7 @@ function init() {
   }, 2000);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-function createCard(cardTitle,cardId){
+function createCard(cardTitle, cardId) {
   let cardContainer = document.createElement("div");
   let card = document.createElement("div");
   let frontFace = document.createElement("div");
@@ -273,7 +273,7 @@ function createStartModal() {
 
   form.append(input, p1, difficultySelection, p2, numbersSelection, button);
 
-  button.innerHTML = "Start";
+  button.innerHTML = "Let's go";
   input.setAttribute("placeholder", "Please Enter Your Name");
 
   modal.append(form);
