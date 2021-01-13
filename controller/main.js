@@ -10,7 +10,6 @@ const restartButton = document.getElementById("restart");
 const homeButton = document.getElementById("home");
 let difficulty = "Easy";
 let numberOfCard = "8";
-
 let gameBrain = new GameBrain();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -28,48 +27,45 @@ function init() {
   document.getElementById("timer").textContent = `${gameBrain.seconds} Seconds`;
   let shuffledArray = gameBrain.cards;
   for (let index = 0; index < shuffledArray.length; index++) {
-    let cardContainer = document.createElement("div");
-    let card = document.createElement("div");
-    let frontFace = document.createElement("div");
-    let backFace = document.createElement("div");
-    ////////////////////////////////////////////////
-    cardContainer.classList.add("card-container");
-    card.classList.add("card");
-    frontFace.className = "front";
-    backFace.className = "back";
-    backFace.textContent = shuffledArray[index].title;
-    card.id = shuffledArray[index].id;
-    //////////////////////////////////////////////////
-    card.append(frontFace, backFace);
-    cardContainer.appendChild(card);
-    gameContainer.appendChild(cardContainer);
+    let card = createCard(shuffledArray[index].title,shuffledArray[index].id);
+    gameContainer.appendChild(card);
+    card.addEventListener("mouseover", function () {
+      card.style.animation = "mouseover 0.1s 1 forwards";
+    });
+
+    card.addEventListener("mouseout", function () {
+      card.style.animation = "mouseout 0.1s 1 forwards";
+    });
+    card.addEventListener("click", function () {
+      cardPressed(card);
+    });
   }
   gameContainer.style.animation = "fly 0.9s ease-in-out forwards";
   infobar.style.animation = "land 0.9s ease-in-out forwards";
   restartButton.addEventListener("click", restartButtonPressed);
-  homeButton.addEventListener('click',function(){
+  homeButton.addEventListener("click", function () {
     location.reload();
-  })
+  });
   gameContainer.classList.add("flip-all-cards", "no-clicking");
   setTimeout(() => {
     gameContainer.classList.remove("flip-all-cards", "no-clicking");
   }, 2000);
-
-  let allCardContainers = Array.from(gameContainer.children);
-
-  // cards callBacks on hover and click
-  allCardContainers.forEach(function (cardContainer) {
-    cardContainer.addEventListener("mouseover", function () {
-      cardContainer.style.animation = "mouseover 0.1s 1 forwards";
-    });
-
-    cardContainer.addEventListener("mouseout", function () {
-      cardContainer.style.animation = "mouseout 0.1s 1 forwards";
-    });
-    cardContainer.addEventListener("click", function () {
-      cardPressed(cardContainer);
-    });
-  });
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+function createCard(cardTitle,cardId){
+  let cardContainer = document.createElement("div");
+  let card = document.createElement("div");
+  let frontFace = document.createElement("div");
+  let backFace = document.createElement("div");
+  cardContainer.classList.add("card-container");
+  card.classList.add("card");
+  frontFace.className = "front";
+  backFace.className = "back";
+  backFace.textContent = cardTitle;
+  card.id = cardId;
+  card.append(frontFace, backFace);
+  cardContainer.appendChild(card);
+  return cardContainer;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 function cardPressed(selectedCard) {
@@ -128,14 +124,29 @@ async function updateCardsUI(card1, card2, matched) {
         document.getElementById("sucess").play();
       }
       addClassToCards(card1UI.parentElement, card2UI.parentNode, "no-clicking");
-      addAnimationToCard(card1UI, card2UI, "pulse 0.5s 1 forwards");
+      addAnimationToCard(
+        card1UI.parentElement,
+        card2UI.parentElement,
+        "pulse 0.5s 1 forwards"
+      );
+      addAnimationToCard(
+        card1UI.lastChild,
+        card2UI.lastChild,
+        "correct 0.5s ease-in-out forwards"
+      );
       removeClassFromCards(card1UI, card2UI, "is-flipped");
     }, setTimeOutDuration);
   } else {
+    removeClassFromCards(card1UI.lastChild, card2UI.lastChild, "wrong");
     setTimeout(() => {
       gameContainer.classList.remove("no-clicking");
       document.getElementById("fail").play();
-      addAnimationToCard(card1UI, card2UI, "rubberBand 1s 1 forwards");
+      addAnimationToCard(
+        card1UI.parentElement,
+        card2UI.parentElement,
+        "rubberBand 1s 1 forwards"
+      );
+      addClassToCards(card1UI.lastChild, card2UI.lastChild, "wrong");
       removeClassFromCards(card1UI, card2UI, "is-flipped");
     }, setTimeOutDuration);
   }
@@ -152,8 +163,8 @@ function removeClassFromCards(card1, card2, removed_class) {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 function addAnimationToCard(card1, card2, animation) {
-  card1.parentElement.style.animation = animation;
-  card2.parentElement.style.animation = animation;
+  card1.style.animation = animation;
+  card2.style.animation = animation;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 function restartButtonPressed() {
@@ -189,12 +200,16 @@ function updateMoves() {
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// this function remove all children nodes of a certain parent node.
 function removeAllChildNodes(parent) {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild);
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// this function create start modal which appears at the begining of the game
 function createStartModal() {
   let overlay = document.createElement("div");
   let overlayBackground = document.createElement("div");
@@ -278,28 +293,35 @@ function createStartModal() {
   });
   return overlay;
 }
-
 ////////////////////////////////////////////////////////////////////////////////////////////////
+// this function create score modal which appears when user win or lose
 function createScoreModal(winner) {
   let overlay = document.createElement("div");
   let overlayBackground = document.createElement("div");
   let modal = document.createElement("div");
   let ratingTitle = document.createElement("p");
+  let timingTitle = document.createElement("p");
+  let time = document.createElement("h2");
   let button = document.createElement("button");
   let title = document.createElement("h2");
   let starClone = document.getElementById("star-list").cloneNode(true);
 
-
   ratingTitle.textContent = "Rating";
+  localStorage.setItem;
   if (winner) {
     title.innerHTML = "Well Done!";
+    timingTitle.textContent = "Finished In:";
     button.innerHTML = "Restart";
+    time.textContent = `${gameBrain.choosenTimer - gameBrain.seconds} seconds`;
     overlayBackground.className = "modal-background sucess";
+    modal.append(title, ratingTitle, starClone, timingTitle, time, button);
   } else {
     title.innerHTML = "Hard Luck!";
     button.innerHTML = "Restart";
     overlayBackground.className = "modal-background fail";
+    modal.append(title, button);
   }
+
   button.addEventListener("click", function (e) {
     e.preventDefault();
     overlay.classList.add("out");
@@ -313,7 +335,6 @@ function createScoreModal(winner) {
   overlay.className = "overlay";
   modal.className = "modal";
 
-  modal.append(title,ratingTitle,starClone, button);
   overlayBackground.appendChild(modal);
   overlay.appendChild(overlayBackground);
 

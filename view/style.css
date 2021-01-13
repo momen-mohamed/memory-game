@@ -56,15 +56,17 @@ body {
   font-size: 25px;
   color: gold;
 }
-.information-bar .stars li , .modal .stars li {
+.information-bar .stars li,
+.modal .stars li {
   display: inline-block;
   list-style: none;
 }
-.information-bar .restart,.home {
+.information-bar .restart,
+.home {
   cursor: pointer;
 }
-.information-bar .home{
-  /* margin-right: 10px; */
+.information-bar .home {
+  margin-right: 10px;
 }
 
 .game-container {
@@ -165,9 +167,12 @@ body {
   transform: rotateY(180deg);
   -webkit-transform: RotateY(180deg);
   background-color: #cbc4db;
-  font-size: 60px;
+  font-size: 50px;
 }
 
+.wrong {
+  animation: wrong 0.5s ease-in-out forwards;
+}
 /* js manipulated classes*/
 
 .is-flipped {
@@ -578,5 +583,31 @@ button:focus {
   }
   100% {
     transform: scale(0);
+  }
+}
+
+@keyframes correct {
+  0% {
+    background-color: #cbc4db;
+  }
+  50% {
+    background-color: rgba(64, 175, 50, 0.6);
+  }
+
+  100% {
+    background-color: #cbc4db;
+  }
+}
+
+@keyframes wrong {
+  0% {
+    background-color: #cbc4db;
+  }
+  50% {
+    background-color: rgba(252, 35, 35, 0.6);
+  }
+
+  100% {
+    background-color: #cbc4db;
   }
 }
