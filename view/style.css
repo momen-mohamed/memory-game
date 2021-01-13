@@ -169,12 +169,10 @@ body {
   background-color: #cbc4db;
   font-size: 50px;
 }
-
 .wrong {
   animation: wrong 0.5s ease-in-out forwards;
 }
 /* js manipulated classes*/
-
 .is-flipped {
   transform: rotateY(180deg);
   -webkit-transform: RotateY(180deg);
